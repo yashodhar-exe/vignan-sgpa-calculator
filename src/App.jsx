@@ -112,7 +112,7 @@ Return JSON only.
       <main className="flex-grow flex flex-col items-center justify-start pt-xl pb-xl px-gutter w-full max-w-container-max mx-auto gap-xl">
         <section className="w-full max-w-2xl flex flex-col items-center gap-md">
           <div className="text-center space-y-sm mb-md">
-            <h1 className="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-background">KNOW YOUR SGPA?</h1>
+            <h1 className="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-background" style={{ fontFamily: 'Delight, sans-serif' }}>KNOW YOUR SGPA?</h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant">
               Upload your{' '}
               <span className="relative inline-block whitespace-nowrap z-0">
