@@ -10,6 +10,7 @@ function App() {
   const [dashboardVisible, setDashboardVisible] = useState(false);
   const [data, setData] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
 
   const fileToBase64 = (file) =>
@@ -25,8 +26,7 @@ function App() {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
+  const processFile = async (file) => {
     if (!file) return;
 
     setImage(file);
@@ -93,6 +93,29 @@ Return JSON only.
     }
   };
 
+  const handleFileChange = (e) => {
+    processFile(e.target.files[0]);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processFile(e.dataTransfer.files[0]);
+      e.dataTransfer.clearData();
+    }
+  };
+
   return (
     <>
       {toastMessage && (
@@ -128,8 +151,14 @@ Return JSON only.
               results screenshot to know your SGPA.
             </p>
           </div>
-          <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/50 shadow-sm p-lg w-full text-center relative overflow-hidden transition-all duration-300 hover:shadow-md hover:border-primary/50 group" id="upload-zone">
-            <div className="border-2 border-dashed border-outline-variant rounded-lg p-xl flex flex-col items-center justify-center gap-sm bg-surface-container-low/30 transition-colors group-hover:bg-primary/5 min-h-[240px]">
+          <div 
+            className={`bg-surface-container-lowest rounded-xl border ${isDragging ? 'border-primary shadow-md' : 'border-outline-variant/50 shadow-sm'} p-lg w-full text-center relative overflow-hidden transition-all duration-300 hover:shadow-md hover:border-primary/50 group`} 
+            id="upload-zone"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <div className={`border-2 border-dashed ${isDragging ? 'border-primary bg-primary/10' : 'border-outline-variant bg-surface-container-low/30'} rounded-lg p-xl flex flex-col items-center justify-center gap-sm transition-colors group-hover:bg-primary/5 min-h-[240px]`}>
               <div className="w-16 h-16 rounded-full bg-primary-container/20 flex items-center justify-center mb-sm group-hover:scale-110 transition-transform duration-300">
                 <span className="material-symbols-outlined text-4xl text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>upload_file</span>
               </div>
